@@ -1,23 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../app/router.dart';
-import '../widgets/custom_textfield.dart';
+import '../../app/router.dart';
 
-class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({super.key});
 
-  @override
-  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
-}
-
-class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  final _emailController = TextEditingController();
-
-  @override
-  void dispose() {
-    _emailController.dispose();
-    super.dispose();
-  }
+class CheckYourEmailScreen extends StatelessWidget {
+  const CheckYourEmailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +19,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               const SizedBox(height: 40),
 
               const Text(
-                'Forgot Password?',
+                'Check Your Email',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
@@ -41,7 +28,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ),
               const SizedBox(height: 12),
               const Text(
-                'To reset your password, you need your email or mobile\nnumber that can be authenticated',
+                'We have sent the reset password to the email address',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
@@ -49,34 +36,32 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   height: 1.5,
                 ),
               ),
-
-              const SizedBox(height: 40),
-
-              SvgPicture.asset(
-                'assets/images/forgotPassword.svg',
-                height: 180,
-                fit: BoxFit.contain,
+              const Text(
+                'brandonelouis@gmail.com',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
 
               const SizedBox(height: 48),
 
-              CustomTextField(
-                label: 'Email',
-                hint: 'Brandonelouis@gmail.com',
-                controller: _emailController,
+              SvgPicture.asset(
+                'assets/images/checkYourEmail.svg',
+                height: 180,
+                fit: BoxFit.contain,
               ),
 
-              const SizedBox(height: 24),
+              const SizedBox(height: 64),
 
-              // Nút Reset Password
+              // Nút Open Your Email
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.pushNamed(
-                    context,
-                    AppRouter.checkYourEmail,
-                  ),
+                  onPressed: () => Navigator.pushNamed(context, AppRouter.successfully),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF130160),
                     shape: RoundedRectangleBorder(
@@ -84,7 +69,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                   child: const Text(
-                    'RESET PASSWORD',
+                    'OPEN YOUR EMAIL',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -123,6 +108,32 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     ),
                   ),
                 ),
+              ),
+
+              const SizedBox(height: 24),
+
+              // You have not received the email?
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'You have not received the email?  ',
+                    style: TextStyle(fontSize: 13, color: Color(0xFF524B6B)),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: const Text(
+                      'Resend',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFFFCA34D),
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.underline,
+                        decorationColor: Color(0xFFFCA34D),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

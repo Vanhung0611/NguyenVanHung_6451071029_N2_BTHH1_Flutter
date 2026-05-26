@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../app/router.dart';
+import '../../app/router.dart';
+
 
 class LogoScreen extends StatefulWidget {
   const LogoScreen({super.key});

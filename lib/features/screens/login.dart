@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import '../app/router.dart';
+import '../../app/router.dart';
 import '../widgets/custom_textfield.dart';
 import '../widgets/login_button.dart';
 import '../widgets/google_signin_button.dart';
+import '../auth/presentation/controllers/auth_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +15,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _controller = AuthController();
   bool _rememberMe = false;
 
   @override
@@ -22,10 +24,11 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,  // 👈 đổi sang trắng
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 24),
@@ -33,8 +36,6 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-
-              // Tiêu đề
               const Text(
                 'Welcome Back',
                 style: TextStyle(
@@ -53,29 +54,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 1.5,
                 ),
               ),
-
               const SizedBox(height: 40),
-
-              // Email
               CustomTextField(
                 label: 'Email',
                 hint: 'Brandonelouis@gmail.com',
                 controller: _emailController,
               ),
-
               const SizedBox(height: 20),
-
-              // Password
               CustomTextField(
                 label: 'Password',
                 hint: '••••••••••',
                 controller: _passwordController,
                 isPassword: true,
               ),
-
               const SizedBox(height: 12),
-
-              // Remember me + Forgot password
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -97,7 +89,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ],
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, AppRouter.forgotPassword),
+                    onPressed: () => Navigator.pushNamed(
+                        context, AppRouter.forgotPassword),
                     child: const Text(
                       'Forgot Password ?',
                       style: TextStyle(
@@ -109,18 +102,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
-
-              LoginButton(onTap: () {}),
-
+              LoginButton(onTap: () async {
+                final success = await _controller.signIn(
+                  _emailController.text.trim(),
+                  _passwordController.text.trim(),
+                );
+                if (!mounted) return;
+                if (success) {
+                  Navigator.pushReplacementNamed(context, AppRouter.successfully);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(_controller.errorMessage ?? 'Lỗi')),
+                  );
+                }
+              }),
               const SizedBox(height: 16),
-
-              GoogleSignInButton(onTap: () {}),
-
+              GoogleSignInButton(onTap: () async {
+                final success = await _controller.signInWithGoogle();
+                if (success) {
+                  Navigator.pushReplacementNamed(context, AppRouter.successfully);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text(_controller.errorMessage ?? 'Lỗi')),
+                  );
+                }
+              }),
               const SizedBox(height: 24),
-
-              // Sign up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -129,7 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontSize: 13, color: Color(0xFF524B6B)),
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.pushNamed(context, AppRouter.signup),
+                    onTap: () =>
+                        Navigator.pushNamed(context, AppRouter.signup),
                     child: const Text(
                       'Sign up',
                       style: TextStyle(

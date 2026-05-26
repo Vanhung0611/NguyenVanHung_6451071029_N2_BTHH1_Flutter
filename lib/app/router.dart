@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:nguyenvanhung_6451071029_th1/screens/checkYourEmail.dart';
-import 'package:nguyenvanhung_6451071029_th1/screens/forgotPassword.dart';
-import 'package:nguyenvanhung_6451071029_th1/screens/logo.dart';
-import 'package:nguyenvanhung_6451071029_th1/screens/successfully.dart';
-import '../screens/login.dart';
-import '../screens/signup.dart';
-import '../screens/splashscreen.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/checkYourEmail.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/forgotPassword.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/login.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/logo.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/signup.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/splashscreen.dart';
+import 'package:nguyenvanhung_6451071029_th1/features/screens/successfully.dart';
 
 class AppRouter {
   static const String logo           = '/';
@@ -15,6 +15,7 @@ class AppRouter {
   static const String forgotPassword = '/forgot-password';
   static const String checkYourEmail = '/check-your-email';
   static const String successfully   = '/successfully';
+  static const String home = '/home';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -22,6 +23,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const LogoScreen());
       case splash:
         return MaterialPageRoute(builder: (_) => const SplashScreen());
+      case home:
+        return MaterialPageRoute(builder: (_) => const LoginScreen());
       case login:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       case signup:

@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
-import '../app/router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../app/router.dart';
 import '../widgets/custom_textfield.dart';
-import '../widgets/google_signin_button.dart';
+import '../auth/presentation/controllers/auth_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -15,6 +15,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _controller = AuthController();
   bool _rememberMe = false;
 
   @override
@@ -36,8 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(height: 40),
-
-              // Tiêu đề
               const Text(
                 'Create an Account',
                 style: TextStyle(
@@ -56,38 +55,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 1.5,
                 ),
               ),
-
               const SizedBox(height: 40),
-
-              // Full name
               CustomTextField(
                 label: 'Full name',
                 hint: 'Brandone Louis',
                 controller: _nameController,
               ),
-
               const SizedBox(height: 20),
-
-              // Email
               CustomTextField(
                 label: 'Email',
                 hint: 'Brandonelouis@gmail.com',
                 controller: _emailController,
               ),
-
               const SizedBox(height: 20),
-
-              // Password
               CustomTextField(
                 label: 'Password',
                 hint: '••••••••••',
                 controller: _passwordController,
                 isPassword: true,
               ),
-
               const SizedBox(height: 12),
-
-              // Remember me + Forgot password
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -112,7 +99,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(context, AppRouter.forgotPassword),
+                    onPressed: () => Navigator.pushNamed(
+                        context, AppRouter.forgotPassword),
                     child: const Text(
                       'Forgot Password ?',
                       style: TextStyle(
@@ -124,15 +112,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
-
-              // Nút Sign Up
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final success = await _controller.signUp(
+                      _emailController.text.trim(),
+                      _passwordController.text.trim(),
+                      _nameController.text.trim(),
+                    );
+                    if (success) {
+                      Navigator.pushNamed(context, AppRouter.checkYourEmail);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                            Text(_controller.errorMessage ?? 'Lỗi')),
+                      );
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF130160),
                     shape: RoundedRectangleBorder(
@@ -150,24 +150,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 16),
-
-              // Nút Google (màu tím nhạt)
               SizedBox(
                 width: double.infinity,
                 height: 52,
                 child: OutlinedButton.icon(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final success = await _controller.signInWithGoogle();
+                    if (success) {
+                      Navigator.pushReplacementNamed(context, AppRouter.home);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                            content:
+                            Text(_controller.errorMessage ?? 'Lỗi')),
+                      );
+                    }
+                  },
                   style: OutlinedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEDE8FF), // 👈 nền tím nhạt
+                    backgroundColor: const Color(0xFFEDE8FF),
                     side: BorderSide.none,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  icon: Image.network(
-                    'https://www.google.com/favicon.ico',
+                  icon: SvgPicture.asset(
+                    'assets/images/icon_google.svg',
                     height: 22,
                     width: 22,
                   ),
@@ -182,10 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 24),
-
-              // Sign in
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

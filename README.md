@@ -2,16 +2,15 @@
 
 A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+Đăng nhập bằng google
+![alt text](image.png)
 
-A few resources to get you started if this is your first Flutter project:
+Đăng nhập thành công
+![alt text](image-1.png)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Chọn tài khoản mà forgot password
+![alt text](image-2.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Thông báo Reset mật khẩu được gửi về email
+![alt text](image-3.png)
